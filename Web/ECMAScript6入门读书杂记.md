@@ -53,3 +53,44 @@ includes使用的是不一样的判断算法，就没有这个问题
 [NaN].includes(NaN)
 // true
 ```
+
+## 第10章 对象的扩展
+
+### 属性的可枚举性和遍历
+
+#### 可枚举性
+
+对象的每个属性都有个描述对象(Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象)。描述对象的enumerable(Boolean类型)属性表示这个属性是否可以被枚举。
+
+目前有四个操作会忽略enumerable为false的属性：
+
+- for...in 循环：只遍历对象自身的和继承的可枚举的属性。
+- Object.keys()：返回对象自身的所有可枚举的属性的键名。
+- JSON.stringify()：只串行化对象自身的可枚举的属性。
+- Object.assing()：忽略enumerable为false的属性，只拷贝对象自身的可枚举属性。
+
+只有for...in会返回继承的属性，其实enumerable最初也是为了防止for...in把对象所有内部属性和方法都遍历出来。
+
+#### 遍历
+
+ES6一共有5中方可以遍历对象属性。
+
+1. for...in循环遍历对象自身和继承的可枚举属性(不含Symbol属性)。
+
+2. Object.keys(obj)返回一个数组，包含对象自身（不含继承的）的所有可枚举的属性（不含Symbol属性）的键名。
+
+3. Object.getOwnPropertyNames(obj)返回一个数组，包含对象自身（不含继承的）的所有属性（不含Symbol属性，但是包含不可枚举的属性）的键名。
+
+4. Object.getOwnPropertySymbols(obj)返回一个数组，包含对象自身所有的Symbol属性的键名。
+
+5. Reflect.ownKeys(obj)返回一个数组，包含对象自身的所有键名，不管是Symbol还是字符串，也不管是是否可枚举。
+
+遍历顺序
+
+先遍历数字属性再根据字符串属性加入时间遍历，最后根据Symbol属性加入时间遍历。
+
+### super关键字
+
+super关键字指向当前对象的原型对象。
+
+super关键字表示原型对象时，只能在对象方法中调用，目前只有对象方法的简写可以正确识别。
